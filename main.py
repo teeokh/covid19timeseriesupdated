@@ -9,16 +9,16 @@ def test_stationarity(timeseries):  # Tests the stationarity of time series usin
     rolstd = timeseries.rolling(window=5).std()
 
     orig = plt.plot(timeseries, label="Original")
-    mean = plt.plot(timeseries, label="Rolling Mean")
-    std = plt.plot(timeseries, label="Rolling std")
+    mean = plt.plot(rolmean, label="Rolling Mean")
+    std = plt.plot(rolstd, label="Rolling std")
 
     plt.legend(loc="best")
     plt.title("Timeseries data with rolling mean and std")
     plt.show()
 
-    dftest = adfuller(timeseries)
+    dftest = adfuller(timeseries, autolag="AIC")
     dfoutput = pd.Series(dftest[0:4],
-                         index=["The test statistic", "Mackinnon's approximate p-value", "#usedLags", "NOBS"])
+                         index=["Test Statistic", "p-value", "Number of Lags Used", "Number of Observations Used"])
 
     print(dfoutput)
 
@@ -37,5 +37,9 @@ covid_UK_dataset = idx_covid_19_dtf[covid_data_UK]
 covid_UK_confirmed_case_data = covid_UK_dataset['Confirmed']
 covid_UK_confirmed_agg_data = covid_UK_confirmed_case_data.groupby(['ObservationDate']).sum()
 
-print(covid_UK_confirmed_agg_data.head())
+test_stationarity(covid_UK_confirmed_agg_data)
+
+covid_UK_confirmed_agg_data_log = np.log(covid_UK_confirmed_agg_data)
+test_stationarity(covid_UK_confirmed_agg_data_log)
+
 
