@@ -26,4 +26,8 @@ def test_stationarity(timeseries):  # Tests the stationarity of time series usin
 dtf = '/Users/terrellokhiria/PycharmProjects/tensorEnv/covid19timeseriesupdated/covid_19_data.csv'
 
 covid_19_dtf = pd.read_csv(dtf)
-print(covid_19_dtf.head())
+
+covid_19_dtf['ObservationDate']=pd.to_datetime(covid_19_dtf['ObservationDate'], infer_datetime_format=True)
+idx_covid_19_dtf = covid_19_dtf.set_index(['ObservationDate'])
+print(idx_covid_19_dtf.head())
+
