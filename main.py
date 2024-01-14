@@ -42,4 +42,7 @@ test_stationarity(covid_UK_confirmed_agg_data)
 covid_UK_confirmed_agg_data_log = np.log(covid_UK_confirmed_agg_data)
 test_stationarity(covid_UK_confirmed_agg_data_log)
 
-
+ma = covid_UK_confirmed_agg_data_log.rolling(window=5).mean()
+covid_UK_confirmed_agg_data_log_minus_ma = covid_UK_confirmed_agg_data_log - ma
+covid_UK_confirmed_agg_data_log_minus_ma.dropna(inplace=True)
+test_stationarity(covid_UK_confirmed_agg_data_log_minus_ma)
