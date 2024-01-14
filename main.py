@@ -29,5 +29,13 @@ covid_19_dtf = pd.read_csv(dtf)
 
 covid_19_dtf['ObservationDate']=pd.to_datetime(covid_19_dtf['ObservationDate'], infer_datetime_format=True)
 idx_covid_19_dtf = covid_19_dtf.set_index(['ObservationDate'])
-print(idx_covid_19_dtf.head())
+
+# print(idx_covid_19_dtf['Country/Region'].unique())
+covid_data_UK = idx_covid_19_dtf['Country/Region'] == 'UK'
+covid_UK_dataset = idx_covid_19_dtf[covid_data_UK]
+
+covid_UK_confirmed_case_data = covid_UK_dataset['Confirmed']
+covid_UK_confirmed_agg_data = covid_UK_confirmed_case_data.groupby(['ObservationDate']).sum()
+
+print(covid_UK_confirmed_agg_data.head())
 
